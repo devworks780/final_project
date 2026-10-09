@@ -1,5 +1,28 @@
-dvc init
-dvc remote add -d my_storage s3://s3-student-mle-20260614-fb07c65e05/dvc_final_project
-dvc remote modify my_storage endpointurl https://storage.yandexcloud.net
-dvc remote modify --local my_storage credentialpath '.env'
-dvc remote modify my_storage version_aware true
+#!/usr/bin/env bash
+set -euo pipefail
+
+PROJECT_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+cd "$PROJECT_ROOT"
+
+# shellcheck disable=SC1091
+source "$PROJECT_ROOT/load_env.sh"
+
+PYTHON_BIN="${PYTHON_BIN:-$PROJECT_ROOT/.venv/bin/python}"
+if [[ ! -x "$PYTHON_BIN" ]]; then
+    echo "Не найден Python окружения: $PYTHON_BIN" >&2
+    exit 1
+fi
+DVC=("$PYTHON_BIN" -m dvc)
+
+if [[ ! -d .dvc ]]; then
+    "${DVC[@]}" init
+fi
+
+DVC_REMOTE_URL="s3://${S3_BUCKET_NAME}/dvc_final_project"
+"${DVC[@]}" remote add --force --default my_storage "$DVC_REMOTE_URL"
+"${DVC[@]}" remote modify my_storage endpointurl "$MLFLOW_S3_ENDPOINT_URL"
+"${DVC[@]}" remote modify my_storage version_aware true
+
+# AWS_ACCESS_KEY_ID и AWS_SECRET_ACCESS_KEY уже экспортированы из .env.
+# .env не является AWS credentials-файлом, поэтому credentialpath не задаётся.
+"${DVC[@]}" remote modify --local --unset my_storage credentialpath 2>/dev/null || true

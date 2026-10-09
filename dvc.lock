@@ -1,0 +1,207 @@
+schema: '2.0'
+stages:
+  validate:
+    cmd: python dvc_data/steps/validate_data.py --sample-rows 100000
+    deps:
+    - path: dvc_data/data/origin/train_ver2.csv
+      hash: md5
+      md5: b687abbb45d6fe06f627257d1b160aef
+      size: 2292759599
+    - path: dvc_data/steps/logging_utils.py
+      hash: md5
+      md5: 7a341590571d48b7a9645fa78cc14439
+      size: 1895
+    - path: dvc_data/steps/validate_data.py
+      hash: md5
+      md5: 322761342e80430399aaff70b168c369
+      size: 5371
+    params:
+      params.yaml:
+        validation.sample_rows: 100000
+    outs:
+    - path: dvc_data/data/validation/validation.json
+      hash: md5
+      md5: f70aa03227463f4ff94c65d821dfe41e
+      size: 309
+      cloud:
+        my_storage:
+          etag: f70aa03227463f4ff94c65d821dfe41e
+          version_id: 00065D642CF843C5
+  eda:
+    cmd: python dvc_data/steps/eda.py
+    deps:
+    - path: dvc_data/data/origin/train_ver2.csv
+      hash: md5
+      md5: b687abbb45d6fe06f627257d1b160aef
+      size: 2292759599
+    - path: dvc_data/data/validation/validation.json
+      hash: md5
+      md5: f70aa03227463f4ff94c65d821dfe41e
+      size: 309
+    - path: dvc_data/steps/eda.py
+      hash: md5
+      md5: 433b8bb5114553afbcfd5d358ace9896
+      size: 25028
+    - path: dvc_data/steps/logging_utils.py
+      hash: md5
+      md5: 7a341590571d48b7a9645fa78cc14439
+      size: 1895
+    - path: dvc_data/steps/validate_data.py
+      hash: md5
+      md5: 322761342e80430399aaff70b168c369
+      size: 5371
+    params:
+      params.yaml:
+        eda.chunk_size: 100000
+        eda.random_state: 42
+        eda.sample_per_chunk: 2000
+        eda.top_categories: 10
+    outs:
+    - path: dvc_data/data/eda/plots/missingness.png
+      hash: md5
+      md5: e89d88e94c2996d96f8ed9a1051ea469
+      size: 48509
+      cloud:
+        my_storage:
+          etag: e89d88e94c2996d96f8ed9a1051ea469
+          version_id: 00065D642D053D20
+    - path: dvc_data/data/eda/plots/monthly_observations.png
+      hash: md5
+      md5: 4f5dbc55ee501701671bf7bacd9b2f55
+      size: 41069
+      cloud:
+        my_storage:
+          etag: 4f5dbc55ee501701671bf7bacd9b2f55
+          version_id: 00065D642D0712EB
+    - path: dvc_data/data/eda/plots/monthly_spikes.png
+      hash: md5
+      md5: c252adafdac1abd120dc6c2d1e5e97c2
+      size: 125436
+      cloud:
+        my_storage:
+          etag: c252adafdac1abd120dc6c2d1e5e97c2
+          version_id: 00065D6488E89607
+    - path: dvc_data/data/eda/plots/product_additions.png
+      hash: md5
+      md5: 542a2cb9845f6034e44e3504961a3901
+      size: 60133
+      cloud:
+        my_storage:
+          etag: 542a2cb9845f6034e44e3504961a3901
+          version_id: 00065D642D0987C5
+    - path: dvc_data/data/eda/plots/product_prevalence.png
+      hash: md5
+      md5: a950cc4e2b4d1a02d80b2ec833174b38
+      size: 57854
+      cloud:
+        my_storage:
+          etag: a950cc4e2b4d1a02d80b2ec833174b38
+          version_id: 00065D642D08B40B
+    - path: dvc_data/data/eda/summary.json
+      hash: md5
+      md5: d7f7e31fa2cb715c014c0ad76f08cec7
+      size: 4300
+      cloud:
+        my_storage:
+          etag: d7f7e31fa2cb715c014c0ad76f08cec7
+          version_id: 00065D6488DB775E
+    - path: dvc_data/data/eda/tables
+      hash: md5
+      files:
+      - relpath: duplicate_analysis.csv
+        md5: 15010ce6fbc6d6c4b42f470c856751d6
+        size: 443
+        cloud:
+          my_storage:
+            etag: 15010ce6fbc6d6c4b42f470c856751d6
+            version_id: 00065D64D3C33BEB
+      - relpath: ind_actividad_cliente_distribution.csv
+        md5: dfa54b695163c84fed10ad07d3da6ed3
+        size: 128
+        cloud:
+          my_storage:
+            etag: dfa54b695163c84fed10ad07d3da6ed3
+            version_id: 00065D64D3C3D560
+      - relpath: missingness.csv
+        md5: 185ded27f1b9f7d6967d0ba2dcb25bba
+        size: 1501
+        cloud:
+          my_storage:
+            etag: 185ded27f1b9f7d6967d0ba2dcb25bba
+            version_id: 00065D64D3C30C23
+      - relpath: monthly_anomalies.csv
+        md5: a5efc92f1305e2fae7dd47fda300aa2c
+        size: 1496
+        cloud:
+          my_storage:
+            etag: a5efc92f1305e2fae7dd47fda300aa2c
+            version_id: 00065D64D3C46BB2
+      - relpath: monthly_coverage.csv
+        md5: 8a1c413e27e11c3df7df553548bd15ca
+        size: 461
+        cloud:
+          my_storage:
+            etag: 8a1c413e27e11c3df7df553548bd15ca
+            version_id: 00065D64D3BA4D59
+      - relpath: monthly_product_additions.csv
+        md5: 05062650963a2b2b4c4b60e2b0e0eb76
+        size: 2192
+        cloud:
+          my_storage:
+            etag: 05062650963a2b2b4c4b60e2b0e0eb76
+            version_id: 00065D64D3C46FA3
+      - relpath: pais_residencia_distribution.csv
+        md5: 5b0db6bc07987b287822bde1c80c1a2d
+        size: 3502
+        cloud:
+          my_storage:
+            etag: 5b0db6bc07987b287822bde1c80c1a2d
+            version_id: 00065D64D3C3953B
+      - relpath: product_additions.csv
+        md5: b18d52d91fefc2ff8eb55ae30c33ea56
+        size: 902
+        cloud:
+          my_storage:
+            etag: b18d52d91fefc2ff8eb55ae30c33ea56
+            version_id: 00065D64D3C35946
+      - relpath: product_prevalence.csv
+        md5: 9cc858af72c4b5eea387925f8fa5165c
+        size: 1464
+        cloud:
+          my_storage:
+            etag: 9cc858af72c4b5eea387925f8fa5165c
+            version_id: 00065D64D4B945B5
+      - relpath: segmento_distribution.csv
+        md5: fcd9c1c35418b2353bc1fe3c0d26df66
+        size: 187
+        cloud:
+          my_storage:
+            etag: fcd9c1c35418b2353bc1fe3c0d26df66
+            version_id: 00065D64D3C5A361
+      - relpath: sexo_distribution.csv
+        md5: 4579cd783845d27233df1b157a1fa9f0
+        size: 111
+        cloud:
+          my_storage:
+            etag: 4579cd783845d27233df1b157a1fa9f0
+            version_id: 00065D64D3C2E751
+  unpack:
+    cmd: python dvc_data/steps/extract_data.py
+    deps:
+    - path: dvc_data/data/origin/train_ver2.csv.zip
+      hash: md5
+      md5: 5aa6c096e5d0445ff5d5b5c6c523a57f
+      size: 224672878
+    - path: dvc_data/steps/extract_data.py
+      hash: md5
+      md5: 1effaa8b6cc32cbafdf5ed6ffe6145df
+      size: 4176
+    - path: dvc_data/steps/logging_utils.py
+      hash: md5
+      md5: 7a341590571d48b7a9645fa78cc14439
+      size: 1895
+    outs:
+    - path: dvc_data/data/origin/train_ver2.csv
+      hash: md5
+      md5: b687abbb45d6fe06f627257d1b160aef
+      size: 2292759599

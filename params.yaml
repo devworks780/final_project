@@ -1,9 +1,14 @@
-# params.yaml
-index_col: 'customer_id'
-target_col: 'target'
-one_hot_drop: 'if_binary'
-auto_class_weights: 'Balanced'
-n_splits: 5
-metrics: ['f1', 'roc_auc']
-n_jobs: -1
-retrain: True
+validation:
+  sample_rows: 100000
+
+eda:
+  chunk_size: 100000
+  top_categories: 10
+  sample_per_chunk: 2000
+  random_state: 42
+
+model:
+  random_state: 42
+  recommendation_k: 7
+  temporal_validation_month: "2016-04-28"
+  temporal_test_month: "2016-05-28"

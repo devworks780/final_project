@@ -1,0 +1,9 @@
+outs:
+- md5: 5aa6c096e5d0445ff5d5b5c6c523a57f
+  size: 224672878
+  hash: md5
+  path: train_ver2.csv.zip
+  cloud:
+    my_storage:
+      etag: ba4c88f089b4354ca22d75afe609e1ef-5
+      version_id: 00065D645F549BDA

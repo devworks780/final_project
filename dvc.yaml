@@ -1,1 +1,45 @@
-# dvc.yaml
+stages:
+  unpack:
+    cmd: python dvc_data/steps/extract_data.py
+    deps:
+      - dvc_data/steps/extract_data.py
+      - dvc_data/steps/logging_utils.py
+      - dvc_data/data/origin/train_ver2.csv.zip
+    outs:
+      - dvc_data/data/origin/train_ver2.csv:
+          cache: false
+
+  validate:
+    cmd: python dvc_data/steps/validate_data.py --sample-rows ${validation.sample_rows}
+    deps:
+      - dvc_data/steps/validate_data.py
+      - dvc_data/steps/logging_utils.py
+      - dvc_data/data/origin/train_ver2.csv
+    params:
+      - validation.sample_rows
+    outs:
+      - dvc_data/data/validation/validation.json
+
+  eda:
+    cmd: python dvc_data/steps/eda.py
+    deps:
+      - dvc_data/steps/eda.py
+      - dvc_data/steps/validate_data.py
+      - dvc_data/steps/logging_utils.py
+      - dvc_data/data/origin/train_ver2.csv
+      - dvc_data/data/validation/validation.json
+    params:
+      - eda.chunk_size
+      - eda.top_categories
+      - eda.sample_per_chunk
+      - eda.random_state
+    outs:
+      - dvc_data/data/eda/tables
+    metrics:
+      - dvc_data/data/eda/summary.json
+    plots:
+      - dvc_data/data/eda/plots/monthly_observations.png
+      - dvc_data/data/eda/plots/product_prevalence.png
+      - dvc_data/data/eda/plots/product_additions.png
+      - dvc_data/data/eda/plots/missingness.png
+      - dvc_data/data/eda/plots/monthly_spikes.png

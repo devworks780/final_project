@@ -1,0 +1,9 @@
+FROM python:3.10-slim
+
+RUN pip install --no-cache-dir \
+    mlflow==2.7.1 \
+    boto3==1.43.46 \
+    psycopg2-binary==2.9.9
+
+EXPOSE 5000
+CMD ["sh", "-c", "exec mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri postgresql+psycopg2://mlflow:mlflow@postgres:5432/mlflow --default-artifact-root s3://${S3_BUCKET_NAME}/final_project/mlflow-artifacts"]

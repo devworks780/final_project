@@ -43,3 +43,36 @@ stages:
       - dvc_data/data/eda/plots/product_additions.png
       - dvc_data/data/eda/plots/missingness.png
       - dvc_data/data/eda/plots/monthly_spikes.png
+
+  prepare_features:
+    cmd: python dvc_data/steps/prepare_features.py
+    deps:
+      - dvc_data/steps/prepare_features.py
+      - dvc_data/steps/validate_data.py
+      - dvc_data/steps/logging_utils.py
+      - dvc_data/data/origin/train_ver2.csv
+      - dvc_data/data/validation/validation.json
+    params:
+      - eda.chunk_size
+      - model.temporal_validation_month
+      - model.temporal_test_month
+    outs:
+      - dvc_data/data/features
+
+  train_baseline:
+    cmd: python dvc_data/steps/train_baseline.py
+    deps:
+      - dvc_data/steps/train_baseline.py
+      - dvc_data/steps/recommendation_metrics.py
+      - dvc_data/steps/logging_utils.py
+      - dvc_data/data/features
+    params:
+      - model
+      - mlflow.enabled
+      - mlflow.experiment_name
+      - mlflow.tracking_uri
+    outs:
+      - dvc_data/data/baseline/model.json
+      - dvc_data/data/baseline/search_results.csv
+    metrics:
+      - dvc_data/data/baseline/metrics.json

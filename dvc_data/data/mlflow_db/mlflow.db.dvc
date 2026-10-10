@@ -1,9 +1,9 @@
 outs:
-- md5: 7f65ed879b06aa040803377d54a6fe6a
-  size: 176128
+- md5: adf51874415b376b75e83ada073c56a5
+  size: 380928
   hash: md5
   path: mlflow.db
   cloud:
     my_storage:
-      etag: 7f65ed879b06aa040803377d54a6fe6a
-      version_id: 00065D651452F722
+      etag: adf51874415b376b75e83ada073c56a5
+      version_id: 00065D7FCB9CD6F6

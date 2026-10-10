@@ -205,3 +205,139 @@ stages:
       hash: md5
       md5: b687abbb45d6fe06f627257d1b160aef
       size: 2292759599
+  prepare_features:
+    cmd: python dvc_data/steps/prepare_features.py
+    deps:
+    - path: dvc_data/data/origin/train_ver2.csv
+      hash: md5
+      md5: b687abbb45d6fe06f627257d1b160aef
+      size: 2292759599
+    - path: dvc_data/data/validation/validation.json
+      hash: md5
+      md5: f70aa03227463f4ff94c65d821dfe41e
+      size: 309
+    - path: dvc_data/steps/logging_utils.py
+      hash: md5
+      md5: 7a341590571d48b7a9645fa78cc14439
+      size: 1895
+    - path: dvc_data/steps/prepare_features.py
+      hash: md5
+      md5: 7a75b93519275560b4c2a1d77d0667e2
+      size: 8431
+    - path: dvc_data/steps/validate_data.py
+      hash: md5
+      md5: 322761342e80430399aaff70b168c369
+      size: 5371
+    params:
+      params.yaml:
+        eda.chunk_size: 100000
+        model.temporal_test_month: '2016-05-28'
+        model.temporal_validation_month: '2016-04-28'
+    outs:
+    - path: dvc_data/data/features
+      hash: md5
+      files:
+      - relpath: summary.json
+        md5: da346938c0aa94a1b155ff066ec3bda6
+        size: 580
+        cloud:
+          my_storage:
+            etag: da346938c0aa94a1b155ff066ec3bda6
+            version_id: 00065D7FCA4DB1B4
+      - relpath: test.parquet
+        md5: d10ce449221783094548b5f6ca30c180
+        size: 5226422
+        cloud:
+          my_storage:
+            etag: d10ce449221783094548b5f6ca30c180
+            version_id: 00065D7FCAF3A511
+      - relpath: transition_stats.parquet
+        md5: 0fcde68232b6eea40a6d5e437960f0a4
+        size: 16165
+        cloud:
+          my_storage:
+            etag: 0fcde68232b6eea40a6d5e437960f0a4
+            version_id: 00065D7FCA46548C
+      - relpath: validation.parquet
+        md5: 19dd9f9b04b56a6c2c725caea18fdd83
+        size: 5205939
+        cloud:
+          my_storage:
+            etag: 19dd9f9b04b56a6c2c725caea18fdd83
+            version_id: 00065D7FCA7772A8
+  train_baseline:
+    cmd: python dvc_data/steps/train_baseline.py
+    deps:
+    - path: dvc_data/data/features
+      hash: md5
+      files:
+      - relpath: summary.json
+        md5: da346938c0aa94a1b155ff066ec3bda6
+      - relpath: test.parquet
+        md5: d10ce449221783094548b5f6ca30c180
+      - relpath: transition_stats.parquet
+        md5: 0fcde68232b6eea40a6d5e437960f0a4
+      - relpath: validation.parquet
+        md5: 19dd9f9b04b56a6c2c725caea18fdd83
+    - path: dvc_data/steps/logging_utils.py
+      hash: md5
+      md5: 7a341590571d48b7a9645fa78cc14439
+      size: 1895
+    - path: dvc_data/steps/recommendation_metrics.py
+      hash: md5
+      md5: d1af8771914d73b213bec926a8c7d410
+      size: 2151
+    - path: dvc_data/steps/train_baseline.py
+      hash: md5
+      md5: 8a43f0de431c559a67d223d6be9695e2
+      size: 13378
+    params:
+      params.yaml:
+        mlflow.enabled: true
+        mlflow.experiment_name: bank_product_recommendations
+        mlflow.tracking_uri: sqlite:///dvc_data/data/mlflow_db/mlflow.db
+        model:
+          random_state: 42
+          recommendation_k: 7
+          temporal_validation_month: '2016-04-28'
+          temporal_test_month: '2016-05-28'
+          popularity_windows:
+          - 1
+          - 3
+          - 6
+          - 12
+          recency_decays:
+          - 0.8
+          - 0.9
+          - 1.0
+          segment_weights:
+          - 0.0
+          - 0.5
+          - 1.0
+          rate_smoothing: 1.0
+          evaluation_batch_size: 100000
+    outs:
+    - path: dvc_data/data/baseline/metrics.json
+      hash: md5
+      md5: dc861590d12870b8824f3386a9ada4ca
+      size: 882
+      cloud:
+        my_storage:
+          etag: dc861590d12870b8824f3386a9ada4ca
+          version_id: 00065D7FCA4E6DB1
+    - path: dvc_data/data/baseline/model.json
+      hash: md5
+      md5: 6d1ad23fdd4c41094d3e5568d8b189d8
+      size: 4432
+      cloud:
+        my_storage:
+          etag: 6d1ad23fdd4c41094d3e5568d8b189d8
+          version_id: 00065D7FCA4E8BAD
+    - path: dvc_data/data/baseline/search_results.csv
+      hash: md5
+      md5: 20b07ac740fd1e54efb8635f6d49f52c
+      size: 4422
+      cloud:
+        my_storage:
+          etag: 20b07ac740fd1e54efb8635f6d49f52c
+          version_id: 00065D7FCA4E821A

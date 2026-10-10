@@ -12,3 +12,14 @@ model:
   recommendation_k: 7
   temporal_validation_month: "2016-04-28"
   temporal_test_month: "2016-05-28"
+  popularity_windows: [1, 3, 6, 12]
+  recency_decays: [0.8, 0.9, 1.0]
+  segment_weights: [0.0, 0.5, 1.0]
+  rate_smoothing: 1.0
+  evaluation_batch_size: 100000
+
+mlflow:
+  enabled: true
+  experiment_name: bank_product_recommendations
+  tracking_uri: sqlite:///dvc_data/data/mlflow_db/mlflow.db
+  artifact_location: s3://${S3_BUCKET_NAME}/final_project/mlflow-artifacts

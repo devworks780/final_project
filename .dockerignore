@@ -1,0 +1,13 @@
+.git
+.venv
+.env
+**/__pycache__
+**/*.pyc
+**/*.log
+**/.DS_Store
+dvc_data/data/origin
+dvc_data/data/eda
+dvc_data/data/features
+dvc_data/data/mlflow_db
+docs
+tests

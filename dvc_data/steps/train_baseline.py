@@ -12,6 +12,7 @@ import mlflow
 import numpy as np
 import pandas as pd
 import yaml
+from joblib import dump
 from logging_utils import get_step_logger, run_logged_step
 from recommendation_metrics import ranking_metrics, top_k_indices
 from validate_data import PRODUCT_COLUMNS
@@ -299,6 +300,9 @@ def main() -> None:
             json.dumps(model, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",
         )
+        # Бинарная копия является самостоятельным модельным артефактом для
+        # проверки проекта и загрузки из Python без повторного JSON-парсинга.
+        dump(model, args.output_dir / "model.pkl")
         result = {
             "best_params": best_params,
             "validation_metrics": {

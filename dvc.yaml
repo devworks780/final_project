@@ -73,6 +73,7 @@ stages:
       - mlflow.tracking_uri
     outs:
       - dvc_data/data/baseline/model.json
+      - dvc_data/data/baseline/model.pkl
       - dvc_data/data/baseline/search_results.csv
     metrics:
       - dvc_data/data/baseline/metrics.json

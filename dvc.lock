@@ -289,8 +289,8 @@ stages:
       size: 2151
     - path: dvc_data/steps/train_baseline.py
       hash: md5
-      md5: 8a43f0de431c559a67d223d6be9695e2
-      size: 13378
+      md5: 86b1c3025762325200788c0ed7fdf03a
+      size: 13711
     params:
       params.yaml:
         mlflow.enabled: true
@@ -333,6 +333,14 @@ stages:
         my_storage:
           etag: 6d1ad23fdd4c41094d3e5568d8b189d8
           version_id: 00065D7FCA4E8BAD
+    - path: dvc_data/data/baseline/model.pkl
+      hash: md5
+      md5: 83da9448331c18faf881c4f963393fd5
+      size: 1885
+      cloud:
+        my_storage:
+          etag: 83da9448331c18faf881c4f963393fd5
+          version_id: 00065D8B0A5AB98D
     - path: dvc_data/data/baseline/search_results.csv
       hash: md5
       md5: 20b07ac740fd1e54efb8635f6d49f52c
